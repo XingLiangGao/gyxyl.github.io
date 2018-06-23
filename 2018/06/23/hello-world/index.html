@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next pisces use-motion" lang="">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -97,7 +97,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -235,9 +235,9 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/23/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Lean">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -274,6 +274,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/23/hello-world/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/23/hello-world/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -370,6 +381,16 @@
           
 
   
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
 
 
 
@@ -406,7 +427,11 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">John Doe</p>
+              <img class="site-author-image" itemprop="image"
+                src="/images/portrait.png"
+                alt="Lean" />
+            
+              <p class="site-author-name" itemprop="name">Lean</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -492,7 +517,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
 
 
 
@@ -592,6 +617,13 @@
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
@@ -610,6 +642,26 @@
 
   
 
+    
+      <script id="dsq-count-scr" src="https://Lean.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/06/23/hello-world/';
+          this.page.identifier = '2018/06/23/hello-world/';
+          this.page.title = 'Hello World';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Lean.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
 
 
 
@@ -622,10 +674,6 @@
   
 
 
-
-
-
-  
 
 
 
