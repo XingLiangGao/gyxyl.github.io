@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="JS是什么1.JS是单线程语言2.JS的Event Loop是JS的执行机制 问题1.JS为什么是单线程的？2.为什么需要异步？3.单线程如何实现异步 解决问题JS为什么是单线程的？JS最初被设计用在浏览器中，那么想象一下，如果浏览器中的JS是多线程的。 场景描述：  那么现在有2个进程，process1 process2，由于是多进程的JS，所以他们对同一个dom，同时进行操作。process1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS 引擎的执行机制">
+<meta property="og:url" content="http://yoursite.com/2018/08/05/JS 引擎的执行机制/index.html">
+<meta property="og:site_name" content="Lean">
+<meta property="og:description" content="JS是什么1.JS是单线程语言2.JS的Event Loop是JS的执行机制 问题1.JS为什么是单线程的？2.为什么需要异步？3.单线程如何实现异步 解决问题JS为什么是单线程的？JS最初被设计用在浏览器中，那么想象一下，如果浏览器中的JS是多线程的。 场景描述：  那么现在有2个进程，process1 process2，由于是多进程的JS，所以他们对同一个dom，同时进行操作。process1">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/aVp1YC8UV0cldgIUXZSDkaMYmP7MPSdRbFJ7vWDOtajwxYsrM5ict40aW2jSRVZYKw4DTPELlvjwyA9P8zQQ3lw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:updated_time" content="2018-08-05T01:11:46.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS 引擎的执行机制">
+<meta name="twitter:description" content="JS是什么1.JS是单线程语言2.JS的Event Loop是JS的执行机制 问题1.JS为什么是单线程的？2.为什么需要异步？3.单线程如何实现异步 解决问题JS为什么是单线程的？JS最初被设计用在浏览器中，那么想象一下，如果浏览器中的JS是多线程的。 场景描述：  那么现在有2个进程，process1 process2，由于是多进程的JS，所以他们对同一个dom，同时进行操作。process1">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/aVp1YC8UV0cldgIUXZSDkaMYmP7MPSdRbFJ7vWDOtajwxYsrM5ict40aW2jSRVZYKw4DTPELlvjwyA9P8zQQ3lw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/05/JS 引擎的执行机制/"/>
+
+
+
+
+
+  <title>JS 引擎的执行机制 | Lean</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lean</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/05/JS 引擎的执行机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lean">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JS 引擎的执行机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-05T08:21:51+08:00">
+                2018-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/05/JS 引擎的执行机制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/05/JS 引擎的执行机制/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="JS是什么"><a href="#JS是什么" class="headerlink" title="JS是什么"></a>JS是什么</h2><p>1.JS是单线程语言<br>2.JS的Event Loop是JS的执行机制</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>1.JS为什么是单线程的？<br>2.为什么需要异步？<br>3.单线程如何实现异步</p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><h4 id="JS为什么是单线程的？"><a href="#JS为什么是单线程的？" class="headerlink" title="JS为什么是单线程的？"></a>JS为什么是单线程的？</h4><p>JS最初被设计用在浏览器中，那么想象一下，如果浏览器中的JS是多线程的。</p>
+<p>场景描述：</p>
+<blockquote>
+<p>那么现在有2个进程，process1 process2，由于是多进程的JS，所以他们对同一个dom，同时进行操作。<br>process1 删除了该dom，而process2 编辑了该dom，同时下达2个矛盾的命令，浏览器究竟该如何执行呢？</p>
+</blockquote>
+<p>这样想，JS为什么被设计成单线程应该就容易理解了吧。</p>
+<h4 id="JS为什么需要异步？"><a href="#JS为什么需要异步？" class="headerlink" title="JS为什么需要异步？"></a>JS为什么需要异步？</h4><p>场景描述：</p>
+<blockquote>
+<p>如果JS中不存在异步，只能自上而下执行，如果上一行解析时间很长，那么下面的代码就会被阻塞。<br>对于用户而言，阻塞就意味着”卡死”，这样就导致了很差的用户体验</p>
+</blockquote>
+<p>所以，JS中存在异步执行。</p>
+<h4 id="JS单线程又是如何实现异步的？"><a href="#JS单线程又是如何实现异步的？" class="headerlink" title="JS单线程又是如何实现异步的？"></a>JS单线程又是如何实现异步的？</h4><p>既然JS是单线程的，只能在一条线程上执行，又是如何实现的异步呢？</p>
+<p>是通过的事件循环(event loop)，理解了event loop机制，就理解了JS的执行机制。</p>
+<h4 id="JS中的event-loop（1）"><a href="#JS中的event-loop（1）" class="headerlink" title="JS中的event loop（1）"></a>JS中的event loop（1）</h4><p>例1,观察它的执行顺序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">console.log(</span><br><span class="line">    1</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">setTimeout(</span><br><span class="line">    function()&#123;</span><br><span class="line">        console.log(2)</span><br><span class="line">&#125;,0)</span><br><span class="line">console.log(3)</span><br></pre></td></tr></table></figure></p>
+<p>运行结果是：1 3 2</p>
+<p>也就是说，setTimeout里的函数并没有立即执行，而是延迟了一段时间，满足一定条件后才去执行的，这类代码，我们叫异步代码。</p>
+<p>所以，这里我们首先知道了JS里的一种分类方式，就是将任务分为：同步任务和异步任务。</p>
+<p>按照这种分类方式:JS的执行机制是：</p>
+<ol>
+<li><p>首先判断JS是同步还是异步，同步就进入主进程，异步就进入event table</p>
+</li>
+<li><p>异步任务在event table中注册函数，当满足触发条件后，被推入event queue</p>
+</li>
+<li><p>同步任务进入主线程后一直执行，直到主线程空闲时，才会去event queue中查看是否有可执行的异步任务，如果有就推入主进程中</p>
+</li>
+</ol>
+<p>以上三步循环执行，这就是event loop。</p>
+<p>所以上面的例子，你是否可以描述它的执行顺序了呢？</p>
+<ul>
+<li><p>console.log(1) 是同步任务，放入主线程里</p>
+</li>
+<li><p>setTimeout() 是异步任务，被放入event table， 0秒之后被推入event queue里</p>
+</li>
+<li><p>console.log(3 是同步任务，放到主线程里</p>
+</li>
+</ul>
+<p>当 1、 3在控制条被打印后，主线程去event queue(事件队列)里查看是否有可执行的函数，执行setTimeout里的函数。</p>
+<h4 id="JS中的event-loop（2）"><a href="#JS中的event-loop（2）" class="headerlink" title="JS中的event loop（2）"></a>JS中的event loop（2）</h4><p>例2：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(</span><br><span class="line">    function()&#123;</span><br><span class="line">        console.log(&apos;定时器开始啦&apos;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">new Promise(function(resolve)&#123;</span><br><span class="line">     console.log(&apos;马上执行for循环啦&apos;);</span><br><span class="line">    for(var i = 0; i &lt; 10000; i++)&#123;</span><br><span class="line">        i == 99 &amp;&amp; resolve();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).then(function()&#123;</span><br><span class="line">    console.log(&apos;执行then函数啦&apos;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> console.log(</span><br><span class="line">&apos;代码执行结束&apos;</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>尝试按照，上文我们刚学到的JS执行机制去分析：</p>
+<ol>
+<li><p>setTimeout 是异步任务，被放到event table</p>
+</li>
+<li><p>new Promise 是同步任务，被放到主进程里，直接执行打印 console.log(‘马上执行for循环啦’)</p>
+</li>
+<li><p>.then 里的函数是异步任务，被放到event table</p>
+</li>
+<li><p>console.log(‘代码执行结束’) 是同步代码，被放到主进程里，直接执行</p>
+</li>
+</ol>
+<p>所以，结果是： 马上执行for循环啦—代码执行结束—定时器开始啦—执行then函数啦吗?</p>
+<p>亲自执行后，结果居然不是这样，而是： 马上执行for循环啦—代码执行结束—执行then函数啦—定时器开始啦</p>
+<p>那么，难道是异步任务的执行顺序，不是前后顺序，而是另有规定？事实上，按照异步和同步的划分方式，并不准确。</p>
+<p>而准确的划分方式是：</p>
+<ul>
+<li><p>macro-task(宏任务)：包括整体代码script，setTimeout，setInterval</p>
+</li>
+<li><p>micro-task(微任务)：Promise，process.nextTick</p>
+</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/aVp1YC8UV0cldgIUXZSDkaMYmP7MPSdRbFJ7vWDOtajwxYsrM5ict40aW2jSRVZYKw4DTPELlvjwyA9P8zQQ3lw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="JS执行机制"></p>
+<p>按照这种分类方式，JS的执行机制是：</p>
+<ol>
+<li><p>执行一个宏任务，过程中如果遇到微任务，就将其放到微任务的“事件队列”里</p>
+</li>
+<li><p>当前宏任务执行完成后，会查看微任务的“事件队列”，并将里面全部的微任务依次执行完</p>
+</li>
+</ol>
+<p>重复以上2步骤，结合event loop(1) event loop(2)，就是更为准确的JS执行机制了</p>
+<p>尝试按照刚学的执行机制，去分析例2：</p>
+<ul>
+<li><p>首先执行script下的宏任务，遇到setTimeout,将其放到宏任务的“队列”里</p>
+</li>
+<li><p>遇到 new Promise直接执行，打印”马上执行for循环啦”</p>
+</li>
+<li><p>遇到then方法，是微任务，将其放到微任务的“队列”里。</p>
+</li>
+<li><p>打印 “代码执行结束”</p>
+</li>
+<li><p>本轮宏任务执行完毕，查看本轮的微任务，发现有一个then方法里的函数，打印”执行then函数啦”</p>
+</li>
+<li><p>到此,本轮的event loop 全部完成。</p>
+</li>
+<li><p>下一轮的循环里，先执行一个宏任务，发现宏任务的“队列”里有一个setTimeout里的函数,执行打印”定时器开始啦”</p>
+</li>
+</ul>
+<p>所以最后的执行顺序是： 马上执行for循环啦—代码执行结束—执行then函数啦—定时器开始啦</p>
+<h4 id="谈谈setTimeout"><a href="#谈谈setTimeout" class="headerlink" title="谈谈setTimeout"></a>谈谈setTimeout</h4><p>这段setTimeout代码什么意思? 我们一般说: 3秒后,会执行setTimeout里的那个函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(</span><br><span class="line">    function()&#123;</span><br><span class="line">        console.log(&apos;执行了&apos;)</span><br><span class="line">    &#125;,3000)</span><br></pre></td></tr></table></figure></p>
+<p>但是这种说并不严谨，准确的解释是：3秒后，setTimeout里的函数被会推入event queue，而event queue(事件队列)里的任务，只有在主线程空闲时才会执行。</p>
+<p>所以只有满足 (1)3秒后 (2)主线程空闲，同时满足时，才会3秒后执行该函数</p>
+<p>如果主线程执行内容很多，执行时间超过3秒，比如执行了10秒，那么这个函数只能10秒后执行了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/05/笔记/" rel="next" title="笔记">
+                <i class="fa fa-chevron-left"></i> 笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/05/Vue和React的区别/" rel="prev" title="Vue和React的区别">
+                Vue和React的区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/portrait.png"
+                alt="Lean" />
+            
+              <p class="site-author-name" itemprop="name">Lean</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JS是什么"><span class="nav-number">1.</span> <span class="nav-text">JS是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决问题"><span class="nav-number">1.2.</span> <span class="nav-text">解决问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JS为什么是单线程的？"><span class="nav-number">1.2.1.</span> <span class="nav-text">JS为什么是单线程的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JS为什么需要异步？"><span class="nav-number">1.2.2.</span> <span class="nav-text">JS为什么需要异步？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JS单线程又是如何实现异步的？"><span class="nav-number">1.2.3.</span> <span class="nav-text">JS单线程又是如何实现异步的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JS中的event-loop（1）"><span class="nav-number">1.2.4.</span> <span class="nav-text">JS中的event loop（1）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JS中的event-loop（2）"><span class="nav-number">1.2.5.</span> <span class="nav-text">JS中的event loop（2）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谈谈setTimeout"><span class="nav-number">1.2.6.</span> <span class="nav-text">谈谈setTimeout</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://Lean.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/08/05/JS 引擎的执行机制/';
+          this.page.identifier = '2018/08/05/JS 引擎的执行机制/';
+          this.page.title = 'JS 引擎的执行机制';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Lean.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
