@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="(a ==1 &amp;amp;&amp;amp; a== 2 &amp;amp;&amp;amp; a==3) 有可能是 true 吗？解法一利用松散相等运算符 == 的工作原理，你可以简单地创建一个带有自定义toString( 或者 valueOf)函数的对象，在每一次使用它时候改变它所的返回值，使其满足所有三个条件。1234567891011const a = &amp;#123;  i: 1,  toString: functi">
+<meta name="description" content="ES6的面向对象： class关键字、构造器和类分开了 class里面直接写方法  继承：super   超类==父类 ES5的继承12345678910111213141516171819202122232425function User(name, pass) &amp;#123;  this.name = name;  this.pass = pass;&amp;#125;User.prototype.sh">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记">
-<meta property="og:url" content="http://yoursite.com/2018/08/05/笔记/index.html">
+<meta property="og:title" content="面向对象和类">
+<meta property="og:url" content="http://yoursite.com/2018/09/28/面向对象和类/index.html">
 <meta property="og:site_name" content="Lean">
-<meta property="og:description" content="(a ==1 &amp;amp;&amp;amp; a== 2 &amp;amp;&amp;amp; a==3) 有可能是 true 吗？解法一利用松散相等运算符 == 的工作原理，你可以简单地创建一个带有自定义toString( 或者 valueOf)函数的对象，在每一次使用它时候改变它所的返回值，使其满足所有三个条件。1234567891011const a = &amp;#123;  i: 1,  toString: functi">
+<meta property="og:description" content="ES6的面向对象： class关键字、构造器和类分开了 class里面直接写方法  继承：super   超类==父类 ES5的继承12345678910111213141516171819202122232425function User(name, pass) &amp;#123;  this.name = name;  this.pass = pass;&amp;#125;User.prototype.sh">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-05T01:12:09.846Z">
+<meta property="og:updated_time" content="2018-10-17T07:14:29.454Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记">
-<meta name="twitter:description" content="(a ==1 &amp;amp;&amp;amp; a== 2 &amp;amp;&amp;amp; a==3) 有可能是 true 吗？解法一利用松散相等运算符 == 的工作原理，你可以简单地创建一个带有自定义toString( 或者 valueOf)函数的对象，在每一次使用它时候改变它所的返回值，使其满足所有三个条件。1234567891011const a = &amp;#123;  i: 1,  toString: functi">
+<meta name="twitter:title" content="面向对象和类">
+<meta name="twitter:description" content="ES6的面向对象： class关键字、构造器和类分开了 class里面直接写方法  继承：super   超类==父类 ES5的继承12345678910111213141516171819202122232425function User(name, pass) &amp;#123;  this.name = name;  this.pass = pass;&amp;#125;User.prototype.sh">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/08/05/笔记/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/28/面向对象和类/"/>
 
 
 
 
 
-  <title>笔记 | Lean</title>
+  <title>面向对象和类 | Lean</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/05/笔记/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/28/面向对象和类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lean">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记</h1>
+          <h1 class="post-title" itemprop="name headline">面向对象和类</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-05T08:14:28+08:00">
-                2018-08-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-28T18:36:58+08:00">
+                2018-09-28
               </time>
             
 
@@ -280,9 +280,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/05/笔记/#comments" itemprop="discussionUrl">
+                <a href="/2018/09/28/面向对象和类/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/05/笔记/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/09/28/面向对象和类/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -310,17 +310,13 @@
       
 
       
-        <h2 id="a-1-amp-amp-a-2-amp-amp-a-3-有可能是-true-吗？"><a href="#a-1-amp-amp-a-2-amp-amp-a-3-有可能是-true-吗？" class="headerlink" title="(a ==1 &amp;&amp; a== 2 &amp;&amp; a==3) 有可能是 true 吗？"></a>(a ==1 &amp;&amp; a== 2 &amp;&amp; a==3) 有可能是 true 吗？</h2><h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>利用松散相等运算符 == 的工作原理，你可以简单地创建一个带有自定义toString( 或者 valueOf)函数的对象，在每一次使用它时候改变它所的返回值，使其满足所有三个条件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const a = &#123;</span><br><span class="line">  i: 1,</span><br><span class="line">  toString: function () &#123;</span><br><span class="line">    return a.i++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(a == 1 &amp;&amp; a == 2 &amp;&amp; a == 3) &#123;</span><br><span class="line">  console.log(&apos;Hello World!&apos;);</span><br><span class="line">&#125;</span><br><span class="line">// Hello World!</span><br></pre></td></tr></table></figure></p>
-<p>之所以会得到如此结果，是由于表达式中使用了松散相等的运算符 ==。使用松散相等时，如果其中一个操作数与另一个类型不同，则 JS 引擎将尝试将一个操作转换为另一个类型。在左边对象、右边的数字的情况下，它会尝试将对象转换为一个数，首先通过调用 valueOf 如果是可调用的。否则，它会调用toString方法。我使用toString仅仅是因为它是我的第一反应，valueOf 会更合理。如果我不从toString返回一个字符串（而是返回数字），JS 引擎会尝试将字符串转换为一个数字，虽然有一个稍长的路径，但它仍然会给我们同样的结果。</p>
-<h3 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var val = 0;</span><br><span class="line"></span><br><span class="line">Object.defineProperty(window, &apos;a&apos;, &#123;</span><br><span class="line">  get: function() &#123;</span><br><span class="line">    return ++val;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">if (a == 1 &amp;&amp; a == 2 &amp;&amp; a == 3) &#123;</span><br><span class="line">  console.log(&apos;yay&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用一个get，让 a 的返回值为三个不同的值。然而这并不意味着我们应该在真正的代码中使用。。。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li><p>利用松散相等运算符 == 的原理，自定义 toString 和 valueOf 返回对应值</p>
-</li>
-<li><p>劫持 JS 对象的 getter，不过这种方式对于严格相等 === 同样有效</p>
-</li>
+        <h3 id="ES6的面向对象："><a href="#ES6的面向对象：" class="headerlink" title="ES6的面向对象："></a>ES6的面向对象：</h3><ol>
+<li>class关键字、构造器和类分开了</li>
+<li>class里面直接写方法</li>
 </ol>
-
+<h4 id="继承："><a href="#继承：" class="headerlink" title="继承："></a>继承：</h4><p>super   超类==父类</p>
+<h5 id="ES5的继承"><a href="#ES5的继承" class="headerlink" title="ES5的继承"></a>ES5的继承</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">function User(name, pass) &#123;</span><br><span class="line">  this.name = name;</span><br><span class="line">  this.pass = pass;</span><br><span class="line">&#125;</span><br><span class="line">User.prototype.showName = function () &#123;</span><br><span class="line">  alert(this.name)</span><br><span class="line">&#125;</span><br><span class="line">User.prototype.showPass = function () &#123;</span><br><span class="line">  alert(this.pass)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function VipUser(name, pass, level) &#123;</span><br><span class="line">  User.call(this, name, pass);</span><br><span class="line">  this.level = level;</span><br><span class="line">&#125;</span><br><span class="line">VipUser.prototype = new User();</span><br><span class="line">VipUser.prototype.constructor = VipUser;</span><br><span class="line">VipUser.prototype.showLevel = function() &#123;</span><br><span class="line">  alert(this.level);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let v1 = VipUser(&apos;张三&apos;, &apos;123&apos;, 3);</span><br><span class="line">v1.showName();</span><br><span class="line">v1.showPass();</span><br><span class="line">v1.showLevel();</span><br></pre></td></tr></table></figure>
+<h5 id="ES6的继承"><a href="#ES6的继承" class="headerlink" title="ES6的继承"></a>ES6的继承</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class User &#123;</span><br><span class="line">  constructor(name, pass) &#123;</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.pass = pass;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  showName() &#123;</span><br><span class="line">    alert(this.name);</span><br><span class="line">  &#125;</span><br><span class="line">  showPass() &#123;</span><br><span class="line">    alert(this.pass);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class VipUser extends User &#123;</span><br><span class="line">  constructor(name, pass, level) &#123;</span><br><span class="line">    super(name, pass);</span><br><span class="line">    this.level = level;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  showLevel() &#123;</span><br><span class="line">    alert(this.level);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let v1 = new VipUser(&apos;李四&apos;, &apos;123&apos;, 4);</span><br><span class="line">v1.showName();</span><br><span class="line">v1.showPass();</span><br><span class="line">v1.showLevel();</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -344,14 +340,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/09/28/主流浏览器图片反防盗链方法总结/" rel="next" title="主流浏览器图片反防盗链方法">
+                <i class="fa fa-chevron-left"></i> 主流浏览器图片反防盗链方法
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/05/JS 引擎的执行机制/" rel="prev" title="JS 引擎的执行机制">
-                JS 引擎的执行机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/09/28/ES6知识点/" rel="prev" title="ES6知识点">
+                ES6知识点 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -480,7 +480,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#a-1-amp-amp-a-2-amp-amp-a-3-有可能是-true-吗？"><span class="nav-number">1.</span> <span class="nav-text">(a ==1 &amp;&amp; a== 2 &amp;&amp; a==3) 有可能是 true 吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解法一"><span class="nav-number">1.1.</span> <span class="nav-text">解法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解法二"><span class="nav-number">1.2.</span> <span class="nav-text">解法二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ES6的面向对象："><span class="nav-number">1.</span> <span class="nav-text">ES6的面向对象：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#继承："><span class="nav-number">1.1.</span> <span class="nav-text">继承：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ES5的继承"><span class="nav-number">1.1.1.</span> <span class="nav-text">ES5的继承</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ES6的继承"><span class="nav-number">1.1.2.</span> <span class="nav-text">ES6的继承</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -650,9 +650,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/08/05/笔记/';
-          this.page.identifier = '2018/08/05/笔记/';
-          this.page.title = '笔记';
+          this.page.url = 'http://yoursite.com/2018/09/28/面向对象和类/';
+          this.page.identifier = '2018/09/28/面向对象和类/';
+          this.page.title = '面向对象和类';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://Lean.disqus.com/embed.js';
